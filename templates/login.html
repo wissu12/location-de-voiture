@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style5.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+  <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <title>Document</title>
+</head>
+  <title>Document</title>
+</head>
+<body>
+
+
+  <section>
+    <form method="POST" action="{{ url_for('login') }}">
+ 
+
+  
+      {% if error %}
+            <div class="alert alert-danger" >
+                   <p style="font-size: 12px; margin-bottom: 0px;"> {{error}} </p>
+            </div>
+      {% endif %}
+
+      <div class="form-box">
+        <div class="form-value">
+            <form action="">
+                <h2>Login</h2>
+                <div class="inputbox">
+                    <ion-icon name="mail-outline"></ion-icon>
+                    <input type="email" required="" id="username"  name="email" >
+                    <label for="">Email</label>
+                </div>
+                <div class="inputbox">
+                    <ion-icon name="lock-closed-outline"></ion-icon>
+                    <input type="password" required="" id="password"   name="password" required autocomplete="current-password" placeholder=".">
+                    <label for="">Password</label>
+                </div>
+               
+                <button>Log in</button>
+                <div class="register">
+                    <p>Back to home <a href="{{ url_for('home_page') }}">Home</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+      <!-- <div class="username t-input">
+        <input type="email" required="" id="username"  class="form-control" name="email" required autocomplete="email" autofocus placeholder="." />
+        <label for="username">Email</label>
+        <div class="b-line"></div>
+      </div>
+      <div class="password t-input">
+        <input type="password" required="" id="password"  class="form-contro" name="password" required autocomplete="current-password" placeholder="." />
+        <label for="password">Password</label>
+        <div class="b-line"></div>
+      </div>
+  
+      <button  type="submit" style="margin-right: 30%;">Log in</button> -->
+  
+      <style>
+        .alert-danger{
+          border-radius: 10px;
+        }
+        .alert-danger p{
+          color: red;
+          font-weight: 900;
+        }
+      </style>
+    </form>
+  </section>
+  
+  
+  </body>
+  </html>

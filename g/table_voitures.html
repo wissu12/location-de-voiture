@@ -1,0 +1,28 @@
+<table>
+    <tr>
+        <th>Photo</th>
+        <th>Nom</th>
+        <th>Marque</th>
+        <th>Date_dispo_debut</th>
+        <th>Date_dispo_fin</th>
+        <th>Statut</th>
+        <th>Prix</th>
+        <th>Actions</th>
+    </tr>
+    {% for voiture in voitures %}
+        <tr>
+            <td><img src="{{ voiture.photo }}" alt="Photo de la voiture" width="200" height="150"></td>
+            <td>{{ voiture.Nom }}</td>
+            <td>{{ voiture.Marque }}</td>
+            <td>{{ voiture.date_dispo_debut }}</td>
+            <td>{{ voiture.date_dispo_fin }}</td>
+            <td>{{ voiture.statut }}</td>
+            <td>{{ voiture.prix }}</td>
+            <td>
+                <a class="edit-button" href="/voitures/{{ voiture._id|string }}/edit">Modifier</a>
+                <a class="delete-button" href="/voitures/{{ voiture._id }}/delete">Supprimer</a>
+                <a class="reserve-button" href="/voitures/{{ voiture._id }}/reserve">Réserver</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>

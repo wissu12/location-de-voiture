@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application de gestion des voitures</title>
+    <style>
+        body {
+            background-image: url("/static/photo-1585503418537-88331351ad99.jpg");
+            background-size: cover;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 32px;
+        }
+
+        p {
+            font-size: 18px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        li {
+            margin: 0 10px;
+        }
+
+        a {
+            color: rgb(252, 251, 251);
+            text-decoration: none;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            border-radius: 4px;
+            border: none;
+            margin-right: 10px;
+        }
+
+        button[type="submit"] {
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Application de gestion des voitures</h1>
+    
+    <ul>
+        <li><a href="/voitures">Voir les voitures</a></li>
+        <li><a href="/voitures/add">Ajouter une voiture</a></li>
+    </ul>
+    <form action="/voitures" method="GET">
+        <input type="text" name="search" placeholder="Rechercher une voiture">
+        <button type="submit">Rechercher</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,28 @@
+
+
+
+    {% for voiture in voitures %}
+    <div class="product">
+        <div class="image">
+            <img src="{{ url_for('static', filename='assets/images/earphone.png') }}" alt="">
+        </div>
+        <div class="namePrice">
+            <h3>{{ voiture.Nom }}</h3>
+            <span>$ {{ voiture.prix }}</span>
+        </div>
+        <p>{{ voiture.Marque }},{{ voiture.statut }}</p>
+        <div class="stars">
+       
+            <p>{{ voiture.date_dispo_debut }},{{ voiture.date_dispo_fin }}</p>
+        </div>
+        <div class="bay" style="margin-top: 60px;">
+            
+            
+            <a class="edit-button" href="/voitures/edit/{{ voiture._id|string }}"><button style="background-color: rgb(79, 230, 220);">Modifier </button></a>
+            <a class="delete-button" href="/voitures/delete/{{ voiture._id|string}}"><button style="background-color: rgb(218, 47, 50);">Supprimer </button></a>
+            <a class="reserve-button" href="/voitures/{{ voiture._id }}/reserve"><button>Réserver </button></a>
+            
+        </div>
+    </div>
+    {% endfor %}
+

@@ -1,0 +1,79 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form  id="add-voiture-form" action="/voitures/add" method="POST" enctype="multipart/form-data">
+            <div class="form-field">
+                <label for="nom">Nom :</label>
+                <input type="text" name="nom" id="nom" value="{{ voiture.Nom }}" required>
+            </div>
+
+            <div class="form-field">
+                <label for="marque">Marque :</label>
+                <input type="text" name="marque" id="marque" value="{{ voiture.Marque }}" required>
+            </div>
+
+            <div class="form-field">
+                <label for="matricule">Matricule :</label>
+                <input type="text" name="matricule" id="matricule" value="{{ voiture.Matricule }}" required>
+            </div>
+
+            <div class="form-field">
+                <label for="date_debut">Date de disponibilité (début) :</label>
+                <input type="date" name="date_debut" id="date_debut" value="{{ voiture.date_dispo_debut }}" required>
+            </div>
+
+            <div class="form-field">
+                <label for="date_fin">Date de disponibilité (fin) :</label>
+                <input type="date" name="date_fin" id="date_fin" value="{{ voiture.date_dispo_fin }}">
+            </div>
+
+            <div class="form-field">
+                <label for="statut">Statut :</label>
+                <input type="text" name="statut" id="statut" value="{{ voiture.statut }}" required>
+            </div>
+
+            <div class="form-field">
+                <label for="prix">Prix :</label>
+                <input type="number" name="prix" id="prix" value="{{ voiture.prix }}" required>
+            </div>
+
+            <div class="form-field">
+                <label for="photo">Photo :</label>
+                <input type="file" name="photo" id="photo">
+            </div>
+
+            <button type="submit">Ajouter</button>
+        </form>
+        <a href="/voitures">Retour à la liste des voitures</a>
+    </div>
+</body>
+</html>
+
+

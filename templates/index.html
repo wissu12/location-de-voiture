@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location de voiture</title>
+    <!-- ======= Styles ====== -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+
+</head>
+
+<body>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="car"></ion-icon>
+                            
+                        </span>
+                        <span class="title">CarRental Express</span>
+                    </a>
+                </li>
+
+                <li style="margin-top: 30px;">
+                    <a href="{{ url_for('admin') }}">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+    
+                
+                
+                
+       
+          
+      
+               
+
+                <li>
+                    <a href="/admins">
+                        <span class="icon">
+                            <ion-icon name="person-outline"></ion-icon>
+                        </span>
+                        <span class="title">Admins</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/managers">
+                        <span class="icon">
+                            <ion-icon name="person-outline"></ion-icon>
+                        </span>
+                        <span class="title">Managers</span>
+                    </a>
+                </li>
+
+              
+
+                <li>
+                    <a href="{{ url_for('edit_mon_compte') }}">
+                        <span class="icon">
+                            <ion-icon name="settings-outline"></ion-icon>
+                        </span>
+                        <span class="title">Settings</span>
+                    </a>
+                </li>
+                
+               
+
+                <li>
+                    <a href="{{ url_for('update_password') }}">
+                        <span class="icon">
+                            <ion-icon name="lock-closed-outline"></ion-icon>
+                        </span>
+                        <span class="title">Password</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/logout">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title">Log Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+               
+              
+            </div>
+
+            <!-- ======================= Cards ================== -->
+            <div class="cardBox" style="margin-top: 35px;">
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{ nombre_reservations_en_attente}}</div>
+                        <div class="cardName">Réservation en attente</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="document-text-outline"></ion-icon>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{nombre_reservations_acceptees}}</div>
+                        <div class="cardName">Réservation acceptée</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="document-text-outline"></ion-icon>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{nombre_reservations_refuses}}</div>
+                        <div class="cardName">Réservation refusée</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="document-text-outline"></ion-icon>
+                    </div>
+                </div>
+               
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{nombre_clients}}</div>
+                        <div class="cardName">client</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="person-circle"></ion-icon>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{nombre_admin}}</div>
+                        <div class="cardName">admin</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="person-circle"></ion-icon>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{nombre_manager}}</div>
+                        <div class="cardName">manager</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="person-circle"></ion-icon>
+                    </div>
+                </div>
+             
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{nombre_voitures}}</div>
+                        <div class="cardName"> Voiture disponible</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="car-outline"></ion-icon>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{nombre_voitures_total}}</div>
+                        <div class="cardName"> Total de Voiture </div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="car-outline"></ion-icon>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================ Order Details List ================= -->
+          
+        </div>
+    </div>
+
+    <!-- =========== Scripts =========  -->
+
+
+    <!-- ====== ionicons ======= -->
+    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

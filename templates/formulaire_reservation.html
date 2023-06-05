@@ -1,0 +1,444 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Admin Dashboard | Korsat X Parmaga</title>
+    <!-- ======= Styles ====== -->
+    <!-- Stylesheet pour DataTables -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/53d355143f.js" crossorigin="anonymous"></script>
+
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/addUser.css') }}">
+    <style>
+        .custom-button {
+            display: inline-block;
+            width: 95px;
+            padding: 6px 12px;
+            background-color: rgb(29, 66, 167);
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    
+        .custom-button:hover {
+            background-color: black;
+        }
+    </style>
+</head>
+<style>   
+    /* .dataTables_length {
+       margin-top: 40px; 
+       margin-left: 150px;
+   }
+    */
+    .dataTables_length {
+        margin-top: 30px;
+    }
+       .dataTables_paginate {
+       text-align: center; /* center pagination controls */
+       margin-top: 40px; /* add margin to top of pagination controls */
+   }
+   div#myTable_info.dataTables_info{
+   margin-left:  145px;
+   margin-top:20px;
+   }
+   .dataTables_paginate .paginate_button {
+       padding: 5px 10px; /* adjust padding of pagination buttons */
+       margin: 0 5px; /* add margin between pagination buttons */
+       width:50px;
+       margin-right:150px;
+       margin-bottom:20px;
+       margin-top:20px;
+   }
+   .dataTables_paginate .paginate_button.current {
+       background-color: #fff; /* set background color of current page button */
+       color: black; /* set text color of current page button */
+       width:50px;
+   }
+   div.dataTables_filter input {
+
+       width: 130px;
+       margin-top:30px;
+       margin-bottom:40px;
+       margin-right:14px;
+       background:red;
+   }
+.dataTables_filter input {
+   width: 100px;
+   }
+   .dataTable {
+        border: 1px solid #ccc;
+    }
+   .dataTables_wrapper .dataTables_filter input{
+       width: 250px;
+   }
+
+   .dataTables_info {
+   margin-left: 100px;
+   }
+
+   td button {
+  border: none; 
+  background-color: transparent; 
+  margin-right: 5px; 
+  cursor: pointer; 
+  padding: 5px 10px;
+}
+
+
+
+td button i {
+  font-size: 1.2em; 
+}
+
+
+td button i.fa-trash {
+  color: red;
+}
+td button i.fa-pen {
+    color: rgb(21, 6, 156);
+}
+
+</style>
+
+<body>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+
+        <div class="navigation">
+            <ul>
+                <li style="margin-bottom: 30px;">
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="car"></ion-icon>
+                            
+                        </span>
+                        <span class="title">CarRental Express</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for('admin') }}">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+    
+                <li>
+                    <a href="{{ url_for('liste_reservations') }}">
+                        <span class="icon">
+                            <ion-icon name="clipboard-outline"></ion-icon>
+                        </span>
+                        <span class="title">Traitement des réservations</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('voitures_encours_reservation') }}">
+                        <span class="icon">
+                            <ion-icon name="clipboard-outline"></ion-icon>
+                        </span>
+                        <span class="title">En cours de  reservations</span>
+                    </a>
+                </li>
+       
+                <li>
+                  <a href="/voitures">
+                      <span class="icon">
+                          <ion-icon name="car-outline"></ion-icon>
+                      </span>
+                      <span class="title">Car</span>
+                  </a>
+                </li>
+      
+                <li>
+                    <a href="{{ url_for('show_historique') }}">
+                        <span class="icon">
+                            <ion-icon name="time-outline"></ion-icon>
+                        </span>
+                        <span class="title">Historique</span>
+                    </a>
+                </li>
+
+                
+                <li>
+                    <a href="/clients">
+                        <span class="icon">
+                            <ion-icon name="person-outline"></ion-icon>
+                        </span>
+                        <span class="title">Clients</span>
+                    </a>
+                </li>
+
+              
+              
+               
+
+                <li>
+                    <a href="{{ url_for('update_password') }}">
+                        <span class="icon">
+                            <ion-icon name="lock-closed-outline"></ion-icon>
+                        </span>
+                        <span class="title">Password</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/logout">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title">Log Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+                
+
+            </div>
+
+           
+            <div class="details" style="margin-left:140px;">
+            
+                <style>
+                    .centered-form {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                    }
+                
+                    .centered-form form {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                    }
+                
+                    .error-message {
+                            background-color: red;
+                            color: white;
+                            font-weight: bold;
+                            padding: 10px;
+                            margin-bottom: 10px;
+                        }
+                
+                        .success-message {
+                            background-color: green;
+                            color: white;
+                            font-weight: bold;
+                            padding: 10px;
+                            margin-bottom: 10px;
+                        }
+                
+                    .centered-form label,
+                    .centered-form input[type="submit"] {
+                        margin: 10px 0;
+                    }
+                </style>
+                
+                
+                    {% if error_message %}
+                    <p class="error-message">{{ error_message }}</p>
+                    {% endif %}
+                
+                
+                    {% if reservation_effectuee %}
+                    <div class="success-message">La réservation a été enregistrée avec succès.</div>
+                    {% endif %}
+                
+                    <div class="centered-form">
+                        
+                        <form action="/voitures/{{ voiture_id }}/reserve" method="POST">
+                                <h2>Resrvation voiture</h2>
+                            <div class="cin">
+                            <label for="cin_client">CIN du client :</label>
+                            <select id="cin_client" name="cin_client">
+                                {% for client in clients %}
+                                <option value="{{ client.cin }}">{{ client.cin }}</option>
+                                {% endfor %}
+                            </select>
+                            </div>
+                            <div class="row2" >
+                            <div class="date">
+                            <label for="date_debut_reservation">Date de début de réservation :</label><br>
+                            <input type="date" id="date_debut_reservation" name="date_debut_reservation" required>
+                            </div>
+                            <div class="date">
+                            <label for="date_fin_reservation">Date de fin de réservation :</label><br>
+                            <input type="date" id="date_fin_reservation" name="date_fin_reservation" required>
+                            </div>
+                            </div>
+                            <input type="hidden" id="statut" name="statut" value="en_attente" >
+                
+                            <input type="hidden" id="matricule" name="matricule" value="{{ matricule }}" >
+                
+                            <input type="hidden" id="prix" name="prix" value="{{ prix }}" required>
+                
+                
+                      
+                            <input type="hidden" id="nom_voiture" name="nom_voiture" value="{{ nom_voiture }}" required>
+                            
+                            
+                            <button type="button" onclick="calculateTotal()">Afficher le total à payer</button>
+                            <p id="total_payer"></p>
+                
+                            <input type="submit" value="Réserver">
+                
+                        </form>
+                
+                    </div>
+                
+                    <script>
+                        function calculateTotal() {
+                            var dateDebut = new Date(document.getElementById("date_debut_reservation").value);
+                            var dateFin = new Date(document.getElementById("date_fin_reservation").value);
+                            var prix = document.getElementById("prix").value;
+                    
+                            var nombreJours = Math.floor((dateFin - dateDebut) / (24  *60* 60 * 1000));
+                            var prixTotal = nombreJours * prix;
+                    
+                            document.getElementById("total_payer").textContent = "Total à payer : " + prixTotal + " $";
+                        }
+                    </script>
+                
+                    <style>
+                
+                    form {
+                        display: flex;
+                        flex-direction: column;
+                        width: 300px;
+                        margin: 0 auto;
+                        border-color: black;
+                        border: black ;
+                        border-width: 2px;
+                        background-color: #217373;
+                        width: 500px;
+                        height: 400px;
+                        border-radius: 10px;
+                        margin-top: -200px;
+                    }
+                
+                    label{
+                        margin-top: 10px;
+                        color: antiquewhite;
+                    }
+                    
+                    h2{
+                        color: antiquewhite;
+                        margin-top: 20px;
+                    }
+                
+                    .date{
+                        margin-left: 10px;
+                    }
+                
+                    .row2{
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;  
+                        margin-top: 20px;
+                        margin-bottom: 15px;
+                 
+                    }
+                    .cin{
+                        margin-left: 30px;
+                        margin-top: 20px;
+                    }
+                
+                   
+                
+                    input[type="date"],
+                    input[type="submit"] {
+                        margin-top: 5px;
+                        padding: 5px;
+                        border: 1px solid #ccc;
+                        border-radius: 3px;
+                        font-size: 14px;
+                        width: 220px;
+                        padding-left: 10px;
+                        height: 40px;
+                    }
+                
+                    select{
+                        margin-top: 5px;
+                        padding: 5px;
+                        border: 1px solid #ccc;
+                        border-radius: 3px;
+                        font-size: 14px;
+                        width: 450px;
+                        height: 40px;
+                    }
+                
+                    input[type="submit"] {
+                        background-color: rgb(79, 230, 220);
+                        color: white;
+                        cursor: pointer;
+                    }
+                
+                    button {
+                        margin-top: 10px;
+                        padding: 5px 10px;
+                        background-color: antiquewhite;
+                        color: #217373;
+                        border: none;
+                        border-radius: 3px;
+                        font-size: 14px;
+                        cursor: pointer;
+                        width: 180px;
+                        height: 40px;
+                        margin-left: -260px;
+                    }
+                
+                    p#total_payer {
+                        margin-top: 10px;
+                        font-size: 16px;
+                        font-weight: bold;
+                        color: white;
+                    }
+                </style>
+                
+                
+                
+                
+
+            </div>
+
+            <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+            <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+          
+
+       
+        </div>
+    </div>
+
+
+
+
+</body>
+
+</html>

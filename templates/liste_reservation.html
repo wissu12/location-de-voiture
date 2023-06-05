@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Admin Dashboard | Korsat X Parmaga</title>
+    <!-- ======= Styles ====== -->
+    <!-- Stylesheet pour DataTables -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+    <style>
+        .custom-button {
+            display: inline-block;
+            width: 95px;
+            padding: 6px 12px;
+            background-color: #dc3545;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    
+        .custom-button:hover {
+            background-color: black;
+        }
+    </style>
+</head>
+<style>   
+    /* .dataTables_length {
+       margin-top: 40px; 
+       margin-left: 150px;
+   }
+    */
+    .dataTables_length {
+        margin-top: 30px;
+    }
+       .dataTables_paginate {
+       text-align: center; /* center pagination controls */
+       margin-top: 40px; /* add margin to top of pagination controls */
+   }
+   div#myTable_info.dataTables_info{
+   margin-left:  145px;
+   margin-top:20px;
+   }
+   .dataTables_paginate .paginate_button {
+       padding: 5px 10px; /* adjust padding of pagination buttons */
+       margin: 0 5px; /* add margin between pagination buttons */
+       width:50px;
+       margin-right:150px;
+       margin-bottom:20px;
+       margin-top:20px;
+   }
+   .dataTables_paginate .paginate_button.current {
+       background-color: #fff; /* set background color of current page button */
+       color: black; /* set text color of current page button */
+       width:50px;
+   }
+   div.dataTables_filter input {
+
+       width: 130px;
+       margin-top:30px;
+       margin-bottom:40px;
+       margin-right:14px;
+       background:red;
+   }
+.dataTables_filter input {
+   width: 100px;
+   }
+   .dataTable {
+        border: 1px solid #ccc;
+    }
+   .dataTables_wrapper .dataTables_filter input{
+       width: 250px;
+   }
+
+   .dataTables_info {
+   margin-left: 100px;
+   }
+</style>
+
+<body>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li style="margin-bottom: 30px;">
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="car"></ion-icon>
+                            
+                        </span>
+                        <span class="title">CarRental Express</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for('admin') }}">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+    
+                <li>
+                    <a href="{{ url_for('liste_reservations') }}">
+                        <span class="icon">
+                            <ion-icon name="clipboard-outline"></ion-icon>
+                        </span>
+                        <span class="title">Traitement des réservations</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('voitures_encours_reservation') }}">
+                        <span class="icon">
+                            <ion-icon name="clipboard-outline"></ion-icon>
+                        </span>
+                        <span class="title">En cours de  reservations</span>
+                    </a>
+                </li>
+       
+                <li>
+                  <a href="/voitures">
+                      <span class="icon">
+                          <ion-icon name="car-outline"></ion-icon>
+                      </span>
+                      <span class="title">Car</span>
+                  </a>
+                </li>
+      
+                <li>
+                    <a href="{{ url_for('show_historique') }}">
+                        <span class="icon">
+                            <ion-icon name="time-outline"></ion-icon>
+                        </span>
+                        <span class="title">Historique</span>
+                    </a>
+                </li>
+
+                
+                <li>
+                    <a href="/clients">
+                        <span class="icon">
+                            <ion-icon name="person-outline"></ion-icon>
+                        </span>
+                        <span class="title">Clients</span>
+                    </a>
+                </li>
+
+              
+              
+               
+
+                <li>
+                    <a href="{{ url_for('update_password') }}">
+                        <span class="icon">
+                            <ion-icon name="lock-closed-outline"></ion-icon>
+                        </span>
+                        <span class="title">Password</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/logout">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title">Log Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+                
+
+            </div>
+
+            <!-- ======================= Cards ================== -->
+
+            <div class="details" style="margin-left:140px;">
+                <div class="recentOrders">
+                    <div class="cardHeader" style="text-align: center;margin-left:240px;">
+                        <h2 style="text-align: center;">liste des réservations</h2>
+                       
+                    </div>
+
+                    <table  id="myTable">
+                        <thead>
+                            <tr>
+                            
+                               <th> Client</th>
+                                <th>CIN</th>
+                              
+                                <th>voiture</th>
+                                <th>Prix</th>
+                               
+                                <th style="width:200px;">Action</th>
+                                
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for reservation in reservations %}
+                            <tr>
+                          
+                                <td>{{ reservation["clients"]["nom"] }} {{ reservation["clients"]["prenom"] }}</td>
+                                <td>{{ reservation["cin_client"] }}</td>
+                              
+                                <td>{{ reservation["voiture"]["Nom"] }}</td>
+                                <td>{{ reservation["voiture"]["prix"] }}</td>
+                        
+                                
+                                <td style="width:200px;">
+                                    <a href="{{ url_for('accepter_reservation', reservation_id=reservation['_id']|string) }}" class="custom-button" style="background-color: aqua;">Accepter</a>
+
+                                  
+                                   <a onclick="showConfirmationAlert(event)" style=" width: 95px;" href="{{ url_for('refuser_reservation', reservation_id=reservation['_id']|string) }}" class="custom-button">
+                                        Refuser
+                                    </a>
+                                   
+                                
+                                </td>
+                            </tr>
+                           
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ================= New Customers ================ -->
+                
+            </div>
+
+            
+          
+
+       
+        </div>
+    </div>
+
+    <!-- =========== Scripts =========  -->
+
+
+    <!-- ====== ionicons ======= -->
+    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+    <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Script pour DataTables -->
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script>
+    function showConfirmationAlert(event) {
+        event.preventDefault(); // Empêche le comportement par défaut du lien
+
+        Swal.fire({
+            title: 'Confirmation',
+            text: 'Êtes-vous sûr de vouloir refuser cette réservation ?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Oui',
+            cancelButtonText: 'Non',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Le code à exécuter lorsque l'utilisateur clique sur "Oui"
+                window.location.href = event.target.href;
+                // window.location.href = "{{ url_for('liste_reservations') }}"; // Redirige vers le lien original
+            }
+        });
+    }
+</script>
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            lengthMenu: [5,10,20,30,40,50,100],
+                language: {
+                     "emptyTable": "Aucun enregistrement trouvé",
+                    "info": "Affichage de START à END sur TOTAL entrées", /* set custom text for info */
+                    "paginate": {
+                              "next": "Suivant", /* set text for "Next" button */
+                              "previous": "Précédent", /* set text for "Previous" button */
+                                  
+                            },
+                    
+                    search: "" ,
+                    // lengthMenu: "Afficher MENU contact", 
+                    searchPlaceholder: "Cherchez une réservation spécifique" // add placeholder text
+                  }
+        });
+    });
+</script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

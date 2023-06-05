@@ -1,0 +1,94 @@
+<style>
+    .centered-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .centered-form form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .error-message {
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .success-message {
+            background-color: green;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+    .centered-form label,
+    .centered-form input[type="submit"] {
+        margin: 10px 0;
+    }
+</style>
+
+<body>
+
+    {% if error_message %}
+    <p class="error-message">{{ error_message }}</p>
+    {% endif %}
+
+
+    {% if reservation_effectuee %}
+    <div class="success-message">La réservation a été enregistrée avec succès.</div>
+    {% endif %}
+
+    <div class="centered-form">
+        <form action="/voitures/{{ voiture_id }}/reserve" method="POST">
+            <label for="cin_client">CIN du client :</label>
+            <input type="text" id="cin_client" name="cin_client" >
+
+            <label for="date_debut_reservation">Date de début de réservation :</label>
+            <input type="date" id="date_debut_reservation" name="date_debut_reservation" required>
+
+            <label for="date_fin_reservation">Date de fin de réservation :</label>
+            <input type="date" id="date_fin_reservation" name="date_fin_reservation" required>
+
+            <label for="statut">Statut :</label>
+            <input type="text" id="statut" name="statut" value="en attente" >
+
+            <label for="matricule">Matricule :</label>
+            <input type="text" id="matricule" name="matricule" value="{{ matricule }}" >
+
+            <label for="prix">Prix :</label>
+            <input type="number" id="prix" name="prix" value="{{ prix }}" required>
+
+
+            <label for="nom_voiture">Nom de la voiture :</label>
+            <input type="text" id="nom_voiture" name="nom_voiture" value="{{ nom_voiture }}" required>
+
+            <button type="button" onclick="calculateTotal()">Afficher le total à payer</button>
+
+            <p id="total_payer"></p>
+
+            <input type="submit" value="Réserver">
+
+        </form>
+
+    </div>
+
+    <script>
+        function calculateTotal() {
+            var dateDebut = new Date(document.getElementById("date_debut_reservation").value);
+            var dateFin = new Date(document.getElementById("date_fin_reservation").value);
+            var prix = document.getElementById("prix").value;
+    
+            var nombreJours = Math.floor((dateFin - dateDebut) / (24  *60* 60 * 1000));
+            var prixTotal = nombreJours * prix;
+    
+            document.getElementById("total_payer").textContent = "Total à payer : " + prixTotal + " $";
+        }
+    </script>
+</body>

@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Admin Dashboard | Korsat X Parmaga</title>
+    <!-- ======= Styles ====== -->
+    <!-- Stylesheet pour DataTables -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/53d355143f.js" crossorigin="anonymous"></script>
+
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/addUser.css') }}">
+    <style>
+        .custom-button {
+            display: inline-block;
+            width: 95px;
+            padding: 6px 12px;
+            background-color: rgb(29, 66, 167);
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    
+        .custom-button:hover {
+            background-color: black;
+        }
+    </style>
+</head>
+<style>   
+    /* .dataTables_length {
+       margin-top: 40px; 
+       margin-left: 150px;
+   }
+    */
+    .dataTables_length {
+        margin-top: 30px;
+    }
+       .dataTables_paginate {
+       text-align: center; /* center pagination controls */
+       margin-top: 40px; /* add margin to top of pagination controls */
+   }
+   div#myTable_info.dataTables_info{
+   margin-left:  145px;
+   margin-top:20px;
+   }
+   .dataTables_paginate .paginate_button {
+       padding: 5px 10px; /* adjust padding of pagination buttons */
+       margin: 0 5px; /* add margin between pagination buttons */
+       width:50px;
+       margin-right:150px;
+       margin-bottom:20px;
+       margin-top:20px;
+   }
+   .dataTables_paginate .paginate_button.current {
+       background-color: #fff; /* set background color of current page button */
+       color: black; /* set text color of current page button */
+       width:50px;
+   }
+   div.dataTables_filter input {
+
+       width: 130px;
+       margin-top:30px;
+       margin-bottom:40px;
+       margin-right:14px;
+       background:red;
+   }
+.dataTables_filter input {
+   width: 100px;
+   }
+   .dataTable {
+        border: 1px solid #ccc;
+    }
+   .dataTables_wrapper .dataTables_filter input{
+       width: 250px;
+   }
+
+   .dataTables_info {
+   margin-left: 100px;
+   }
+
+   td button {
+  border: none; 
+  background-color: transparent; 
+  margin-right: 5px; 
+  cursor: pointer; 
+  padding: 5px 10px;
+}
+
+
+
+td button i {
+  font-size: 1.2em; 
+}
+
+
+td button i.fa-trash {
+  color: red;
+}
+td button i.fa-pen {
+    color: rgb(21, 6, 156);
+}
+
+</style>
+
+<body>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="car"></ion-icon>
+                            
+                        </span>
+                        <span class="title">CarRental Express</span>
+                    </a>
+                </li>
+
+                <li style="margin-top: 30px;">
+                    <a href="{{ url_for('admin') }}">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+    
+                
+                
+                
+       
+          
+      
+               
+
+                <li>
+                    <a href="/admins">
+                        <span class="icon">
+                            <ion-icon name="person-outline"></ion-icon>
+                        </span>
+                        <span class="title">Admins</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/managers">
+                        <span class="icon">
+                            <ion-icon name="person-outline"></ion-icon>
+                        </span>
+                        <span class="title">Managers</span>
+                    </a>
+                </li>
+
+              
+
+                <li>
+                    <a href="{{ url_for('edit_mon_compte') }}">
+                        <span class="icon">
+                            <ion-icon name="settings-outline"></ion-icon>
+                        </span>
+                        <span class="title">Settings</span>
+                    </a>
+                </li>
+                
+               
+
+                <li>
+                    <a href="{{ url_for('update_password') }}">
+                        <span class="icon">
+                            <ion-icon name="lock-closed-outline"></ion-icon>
+                        </span>
+                        <span class="title">Password</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/logout">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title">Log Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+                
+
+                <div class="user">
+                    <img  src="{{ url_for('static', filename='assets/imgs/customer01.jpg') }}" alt="">
+                </div>
+            </div>
+
+            <!-- ======================= Cards ================== -->
+            {% if success %}
+            <script>
+                // Vérifier si la variable 'success' est non vide
+                if ("{{ success }}" !== "") {
+                    document.addEventListener("DOMContentLoaded", function(event) {
+                        swal({
+                            title: "Succès",
+                            text: "{{ success }}",
+                            icon: "success",
+                            button: "OK"
+                        });
+                    });
+                }
+            </script>
+            {% endif %}
+            <div class="details" style="margin-left:140px;">
+              <div class="container2" style="margin-left: 25%;" >
+                <h1 class="form-title">Ajouter Admin/Manager</h1>
+                {% if error %}
+                <div class="alert alert-danger" >
+                       <p style="font-size: 12px; margin-bottom: 0px;"> {{error}} </p>
+                </div>
+                {% endif %}
+                <form  action="{{ url_for('edit_manager', manager_id=manager['_id']) }}" method="post">
+                  <div class="main-user-info">
+                    <div class="user-input-box">
+                      <label for="fullName">Nom</label>
+                      <input type="text"
+                              id="fullName"
+                              name="nom"
+                              value="{{manager.nom}}"
+                              placeholder="Enter Nom"/>
+                    </div>
+                    <div class="user-input-box">
+                      <label for="username">Prenom</label>
+                      <input type="text"
+                              id="username"
+                              name="prenom"
+                              value="{{manager.prenom}}"
+                              placeholder="Enter Prenom"/>
+                    </div>
+                    <div class="user-input-box">
+                      <label for="email">Email</label>
+                      <input type="email"
+                              id="email"
+                              name="email"
+                              value="{{manager.email}}"
+                              placeholder="Enter Email"/>
+                    </div>
+                    <div class="user-input-box">
+                      <label for="phoneNumber">Numero telephone</label>
+                      <input type="text"
+                              id="phoneNumber"
+                              name="telephone"
+                              value="{{manager.telephone}}"
+                              placeholder="Enter Numero telephone"/>
+                    </div>
+                    <div class="user-input-box">
+                      <label for="password">CIN</label>
+                      <input type="text"
+                              id="password"
+                              name="cin"
+                              value="{{manager.cin}}"
+                              placeholder="Enter CIN"/>
+                    </div>
+                    
+                  </div>
+                  <div class="gender-details-box">
+                    <span class="gender-title">Role</span>
+                    <div class="gender-category">
+                      <input type="radio" name="role" id="admin" value="admin">
+                      <label for="admin">Admin</label>
+                      <input type="radio" name="role" id="manager" value="manager" checked>
+                      <label for="manager">manager</label>
+                    </div>
+                  </div>
+                  <div class="form-submit-btn">
+                    <input type="submit" value="Ajouter">
+                  </div>
+                </form>
+              </div>
+              <style>
+                .alert-danger{
+                  border-radius: 10px;
+                  background-color: #c46060db;
+                  
+                  padding: 10px;
+          
+                }
+                .alert-danger p{
+                  color: rgb(203, 11, 11);
+                  font-weight: 900;
+                }
+            </style>
+
+                <!-- ================= New Customers ================ -->
+                
+            </div>
+
+            <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+            <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+          
+
+       
+        </div>
+    </div>
+
+
+
+
+</body>
+
+</html>

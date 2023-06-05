@@ -1,0 +1,152 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des voitures</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .edit-button, .delete-button {
+            display: inline-block;
+            padding: 6px 12px;
+            text-align: center;
+            text-decoration: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 4px;
+        }
+
+        .delete-button {
+            background-color: #f44336;
+        }
+        .reserve-button {
+        display: inline-block;
+        padding: 6px 12px;
+        text-align: center;
+        text-decoration: none;
+        background-color: blue; /* Couleur de fond bleue */
+        color: white; /* Couleur du texte en blanc */
+        border-radius: 4px;
+    }
+
+        .add-button {
+            display: block;
+            margin-bottom: 10px;
+            padding: 6px 12px;
+            text-align: center;
+            text-decoration: none;
+            background-color: blue;
+            color: white;
+            border-radius: 4px;
+        }
+
+        .search-form {
+            margin-bottom: 10px;
+        }
+
+        .search-form input[type="date"] {
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
+
+        .search-form input[type="submit"] {
+            display: inline-block;
+            padding: 6px 12px;
+            text-align: center;
+            text-decoration: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+        <!-- Include jQuery library -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                // Fonction pour effectuer la requête AJAX de filtrage
+                function filtrerVoitures() {
+                    var dateDebut = $('#date_debut').val();
+                    var dateFin = $('#date_fin').val();
+    
+                    // Effectuer la requête AJAX
+                    $.ajax({
+                        url: '/voitures/search',
+                        type: 'GET',
+                        data: { date_debut: dateDebut, date_fin: dateFin },
+                        success: function(response) {
+                            // Mettre à jour le contenu de la table avec les résultats de la recherche
+                            $('#table_voitures').html(response);
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                }
+    
+                // Écouter l'événement de clic sur le bouton de recherche
+                $('#btn_rechercher').click(function(e) {
+                    e.preventDefault();
+                    filtrerVoitures();
+                });
+            });
+        </script>
+    
+</head>
+<body>
+    <div class="search-form">
+        <form action="/voitures/search" method="POST">
+            <label for="date_debut">Date de début :</label>
+            <input type="date" id="date_debut" name="date_debut">
+            
+            <label for="date_fin">Date de fin :</label>
+            <input type="date" id="date_fin" name="date_fin">
+
+            <input  id="btn_rechercher" type="submit" value="Rechercher">
+        </form>
+    </div>
+
+    <a class="add-button" href="/voitures/add">Ajouter une voiture</a>
+    <table  id="table_voitures">
+        <tr>
+            <th>Photo</th>
+            <th>Nom</th>
+            <th>Marque</th>
+            <th>Matricule</th>
+            <th>Date_dispo_debut</th>
+            <th>Date_dispo_fin</th>
+            <th>Statut</th>
+            <th>Prix</th>
+            <th>Actions</th>
+        </tr>
+        {% for voiture in voitures %}
+            <tr>
+                <td><img src="{{ voiture.photo }}" alt="Photo de la voiture" width="200" height="150"></td>
+                <td>{{ voiture.Nom }}</td>
+                <td>{{ voiture.Marque }}</td>
+                <td>{{ voiture.Matricule }}</td>
+                <td>{{ voiture.date_dispo_debut }}</td> 
+                <td>{{ voiture.date_dispo_fin }}</td>
+                <td>{{ voiture.statut }}</td>
+                <td>{{ voiture.prix }}</td>
+                <td>
+                    <a class="edit-button" href="/voitures/edit/{{ voiture._id|string }}">Modifier</a>
+                    <a class="delete-button" href="/voitures/delete/{{ voiture._id|string}}">Supprimer</a>
+                    <a class="reserve-button" href="/voitures/{{ voiture._id }}/reserve">Réserver</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

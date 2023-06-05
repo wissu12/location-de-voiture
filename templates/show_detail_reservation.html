@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+ 
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Admin Dashboard | Korsat X Parmaga</title>
+    <!-- ======= Styles ====== -->
+    <!-- Stylesheet pour DataTables -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style2.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+    <style>
+        .custom-button {
+            display: inline-block;
+            width: 95px;
+            padding: 6px 12px;
+            background-color: #dc3545;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    
+        .custom-button:hover {
+            background-color: black;
+        }
+    </style>
+</head>
+<style>   
+    /* .dataTables_length {
+       margin-top: 40px; 
+       margin-left: 150px;
+   }
+    */
+    .dataTables_length {
+        margin-top: 30px;
+    }
+       .dataTables_paginate {
+       text-align: center; /* center pagination controls */
+       margin-top: 40px; /* add margin to top of pagination controls */
+   }
+   div#myTable_info.dataTables_info{
+   margin-left:  145px;
+   margin-top:20px;
+   }
+   .dataTables_paginate .paginate_button {
+       padding: 5px 10px; /* adjust padding of pagination buttons */
+       margin: 0 5px; /* add margin between pagination buttons */
+       width:50px;
+       margin-right:150px;
+       margin-bottom:20px;
+       margin-top:20px;
+   }
+   .dataTables_paginate .paginate_button.current {
+       background-color: #fff; /* set background color of current page button */
+       color: black; /* set text color of current page button */
+       width:50px;
+   }
+   div.dataTables_filter input {
+
+       width: 130px;
+       margin-top:30px;
+       margin-bottom:40px;
+       margin-right:14px;
+       background:red;
+   }
+.dataTables_filter input {
+   width: 100px;
+   }
+   .dataTable {
+        border: 1px solid #ccc;
+    }
+   .dataTables_wrapper .dataTables_filter input{
+       width: 250px;
+   }
+
+   .dataTables_info {
+   margin-left: 100px;
+   }
+</style>
+
+<body>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+        <div class="navigation">
+          <ul>
+            <li style="margin-bottom: 30px;">
+                <a href="#">
+                    <span class="icon">
+                        <ion-icon name="car"></ion-icon>
+                        
+                    </span>
+                    <span class="title">CarRental Express</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('admin') }}">
+                    <span class="icon">
+                        <ion-icon name="home-outline"></ion-icon>
+                    </span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('liste_reservations') }}">
+                    <span class="icon">
+                        <ion-icon name="clipboard-outline"></ion-icon>
+                    </span>
+                    <span class="title">Traitement des réservations</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('voitures_encours_reservation') }}">
+                    <span class="icon">
+                        <ion-icon name="clipboard-outline"></ion-icon>
+                    </span>
+                    <span class="title">En cours de  reservations</span>
+                </a>
+            </li>
+   
+            <li>
+              <a href="/voitures">
+                  <span class="icon">
+                      <ion-icon name="car-outline"></ion-icon>
+                  </span>
+                  <span class="title">Car</span>
+              </a>
+            </li>
+  
+            <li>
+                <a href="{{ url_for('show_historique') }}">
+                    <span class="icon">
+                        <ion-icon name="time-outline"></ion-icon>
+                    </span>
+                    <span class="title">Historique</span>
+                </a>
+            </li>
+
+            
+            <li>
+                <a href="/clients">
+                    <span class="icon">
+                        <ion-icon name="person-outline"></ion-icon>
+                    </span>
+                    <span class="title">Clients</span>
+                </a>
+            </li>
+
+          
+          
+           
+
+            <li>
+                <a href="{{ url_for('update_password') }}">
+                    <span class="icon">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                    </span>
+                    <span class="title">Password</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/logout">
+                    <span class="icon">
+                        <ion-icon name="log-out-outline"></ion-icon>
+                    </span>
+                    <span class="title">Log Out</span>
+                </a>
+            </li>
+        </ul>
+        </div>
+
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+       
+            </div>
+
+            <!-- ======================= Cards ================== -->
+            <div class="container2 flex">
+              {% for res in reservation %}
+                <div class="left">
+                  <div class="main_image">
+                    <img style="height:360px;width:370px;"   src="{{ url_for('static', filename=res.photo) }}" alt="" class="slide">
+                  </div>
+                 
+                </div>
+                <div class="right">
+                  
+                 
+                
+                  
+                  <h3 >{{ res.voiture_nom }}</h3>
+                  
+                  <div style="margin-top:-20px;display: flex;">
+                    <p>Marque :</p>
+                    <h5 style="margin-top: 25px;">{{ res.voiture_marque }}</h5>
+                  </div>
+                  <div style="margin-top:-50px;display: flex;">
+                    <p>Prix :</p>
+                    <h5 style="margin-top: 25px;"><small>$</small>{{ res.voiture_prix }}</h5>
+                  </div>
+                  
+                  <div style="margin-top:-50px;display: flex;">
+                    <p>Nom du client :</p>
+                    <h5 style="margin-top: 25px;">{{ res.client_nom }} {{ res.client_prenom }}</h5>
+                  </div>
+                  <div style="margin-top:-50px;display: flex;">
+                    <p>Début de réservation:</p>
+                    <h5 style="margin-top: 25px;">{{ res.date_debut_reserv }}</h5>
+                  </div>
+                  <div style="margin-top:-50px;display: flex;">
+                    <p>Fin de réservation:</p>
+                    <h5 style="margin-top: 25px;">{{ res.date_fin_reserv }}</h5>
+                  </div>
+                  
+                  <div style="margin-top:-50px;display: flex;">
+                    <p>État de réservation:</p>
+                    <h5 style="margin-top: 25px;">{{ res.statut }}</h5>
+                  </div>
+                  
+                  {% endfor %}
+                  
+
+              
+            <!-- <button style="margin-top: -70px;" onclick="telechargerPDF()">Télécharger la page en PDF</button>
+                 
+                 -->
+                </div>
+              </div>
+            
+        
+            </div>
+                </div>
+
+                <!-- ================= New Customers ================ -->
+                
+            </div>
+
+            
+          
+
+       
+        </div>
+    </div>
+    <!-- <style type="text/css">
+        @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap");
+    
+    
+    
+    .wrapper {
+    margin-top:0px;
+      background-color: white;
+      border-radius: 15px;
+      overflow: hidden;
+      margin-left:1320px;
+      width:470px;
+      height:460px;
+      box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
+        rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+        rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    }
+    
+    .grey {
+      color: #999999;
+    }
+    
+   
+    
+    .profile-bottom {
+      margin-top: 75px;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .main-infos {
+      display: flex;
+      align-items: center;
+      font-size: 22px;
+      margin-bottom: 5px;
+    }
+    
+    .name {
+      font-weight: 600;
+      margin-right: 15px;
+    }
+    
+    .email2 {
+      font-size: 34px;
+    
+    }
+    
+    .ville {
+      font-size: 20px;
+      margin-bottom: 75px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .ville ion-icon {
+      margin-right: 5px;
+      color: #388eff;
+    }
+    
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      width: 100%;
+    }
+    
+    .stat-item:not(:last-child) {
+      border-right: 1px solid black;
+    }
+    
+    .stat {
+      font-size: 20px;
+      font-weight: 700;
+    }
+        </style> -->
+<style>
+.wrapper {
+    margin-top:-40px;
+      background-color: white;
+      border-radius: 15px;
+      overflow: hidden;
+      margin-left:200px;
+      width:370px;
+      height:460px;
+      box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
+        rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+        rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    }
+    
+    .grey {
+      color: #999999;
+    }
+    
+    .profile-top {
+     
+       width:370px;
+      height:170px;
+      background-image: url("image_songs/city.jpg");
+      background-position: center;
+      background-size: cover;
+      position: relative;
+    }
+    
+    
+                 .profile-pic{
+                        height: 100%;
+                width: 100%;
+    
+                    }
+    .profile-image {
+    
+     
+      background-position: center;
+      background-size: cover;
+      position: relative;
+      width: 150px;
+      height: 150px;
+      overflow: hidden;
+      border-radius: 50%;
+      border: 3px solid white;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 50%);
+    }
+    
+    
+           
+    
+    .profile-bottom {
+      margin-top: 75px;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .main-infos {
+      display: flex;
+      align-items: center;
+      font-size: 22px;
+      margin-bottom: 5px;
+    }
+    
+    .name {
+      font-weight: 600;
+      margin-right: 15px;
+    }
+    
+    .email2 {
+      font-size: 34px;
+    
+    }
+    
+    .ville {
+      font-size: 20px;
+      margin-bottom: 75px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .ville ion-icon {
+      margin-right: 5px;
+      color: #388eff;
+    }
+    
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      width: 100%;
+    }
+    
+    .stat-item:not(:last-child) {
+      border-right: 1px solid black;
+    }
+    
+    .stat {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    </style>
+
+    <!-- =========== Scripts =========  -->
+
+
+    <!-- ====== ionicons ======= -->
+    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+    <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Script pour DataTables -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+    function img(anything) {
+      document.querySelector('.slide').src = anything;
+    }
+
+    function change(change) {
+      const line = document.querySelector('.home');
+      line.style.background = change;
+    }
+  </script>
+<script>
+    function telechargerPDF() {
+      // Sélection de l'élément contenant le contenu de la page
+      const element = document.querySelector('.container2');
+    
+      // Options de configuration pour html2pdf
+      const options = {
+        filename: 'page.pdf',
+        image: { type: 'jpeg', quality: 0.98 }, // Format d'image pour le PDF
+        html2canvas: { scale: 2 }, // Échelle pour améliorer la qualité de rendu
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } // Format du document PDF
+      };
+    
+      // Génération du PDF à partir du contenu de l'élément
+      html2pdf().set(options).from(element).save();
+    }
+    </script>
+    
+    
+
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

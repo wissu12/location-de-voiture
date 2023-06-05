@@ -1,0 +1,485 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Admin Dashboard | Korsat X Parmaga</title>
+    <!-- ======= Styles ====== -->
+    <!-- Stylesheet pour DataTables -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/53d355143f.js" crossorigin="anonymous"></script>
+
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+    <style>
+        .custom-button {
+            display: inline-block;
+            width: 95px;
+            padding: 6px 12px;
+            background-color: rgb(29, 66, 167);
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    
+        .custom-button:hover {
+            background-color: black;
+        }
+    </style>
+</head>
+<style>   
+    /* .dataTables_length {
+       margin-top: 40px; 
+       margin-left: 150px;
+   }
+    */
+    .dataTables_length {
+        margin-top: 30px;
+    }
+       .dataTables_paginate {
+       text-align: center; /* center pagination controls */
+       margin-top: 40px; /* add margin to top of pagination controls */
+   }
+   div#myTable_info.dataTables_info{
+   margin-left:  145px;
+   margin-top:20px;
+   }
+   .dataTables_paginate .paginate_button {
+       padding: 5px 10px; /* adjust padding of pagination buttons */
+       margin: 0 5px; /* add margin between pagination buttons */
+       width:50px;
+       margin-right:150px;
+       margin-bottom:20px;
+       margin-top:20px;
+   }
+   .dataTables_paginate .paginate_button.current {
+       background-color: #fff; /* set background color of current page button */
+       color: black; /* set text color of current page button */
+       width:50px;
+   }
+   div.dataTables_filter input {
+
+       width: 130px;
+       margin-top:30px;
+       margin-bottom:40px;
+       margin-right:14px;
+       background:red;
+   }
+.dataTables_filter input {
+   width: 100px;
+   }
+   .dataTable {
+        border: 1px solid #ccc;
+    }
+   .dataTables_wrapper .dataTables_filter input{
+       width: 250px;
+   }
+
+   .dataTables_info {
+   margin-left: 100px;
+   }
+
+   td button {
+  border: none; 
+  background-color: transparent; 
+  margin-right: 5px; 
+  cursor: pointer; 
+  padding: 5px 10px;
+}
+
+
+
+td button i {
+  font-size: 1.2em; 
+}
+
+
+td button i.fa-trash {
+  color: red;
+}
+td button i.fa-pen {
+    color: rgb(21, 6, 156);
+}
+
+</style>
+
+<body>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="car"></ion-icon>
+                            
+                        </span>
+                        <span class="title">CarRental Express</span>
+                    </a>
+                </li>
+
+                <li style="margin-top: 30px;">
+                    <a href="{{ url_for('admin') }}">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+    
+                
+                
+                
+       
+          
+      
+               
+
+                <li>
+                    <a href="/admins">
+                        <span class="icon">
+                            <ion-icon name="person-outline"></ion-icon>
+                        </span>
+                        <span class="title">Admins</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/managers">
+                        <span class="icon">
+                            <ion-icon name="person-outline"></ion-icon>
+                        </span>
+                        <span class="title">Managers</span>
+                    </a>
+                </li>
+
+              
+
+                <li>
+                    <a href="{{ url_for('edit_mon_compte') }}">
+                        <span class="icon">
+                            <ion-icon name="settings-outline"></ion-icon>
+                        </span>
+                        <span class="title">Settings</span>
+                    </a>
+                </li>
+                
+               
+
+                <li>
+                    <a href="{{ url_for('update_password') }}">
+                        <span class="icon">
+                            <ion-icon name="lock-closed-outline"></ion-icon>
+                        </span>
+                        <span class="title">Password</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/logout">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title">Log Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+                
+
+                <div class="user">
+                    <img  src="{{ url_for('static', filename='assets/imgs/customer01.jpg') }}" alt="">
+                </div>
+            </div>
+
+            <!-- ======================= Cards ================== -->
+            {% if success %}
+            <script>
+                // Vérifier si la variable 'success' est non vide
+                if ("{{ success }}" !== "") {
+                    document.addEventListener("DOMContentLoaded", function(event) {
+                        swal({
+                            title: "Succès",
+                            text: "{{ success }}",
+                            icon: "success",
+                            button: "OK"
+                        });
+                    });
+                }
+            </script>
+            {% endif %}
+            <div class="details" style="margin-left:140px;">
+                <div class="recentOrders">
+                    <div class="cardHeader" style="text-align: center;margin-left:240px;">
+                        <h2 style="text-align: center;">Historique</h2>
+                       
+                    </div>
+                    <button class="button-25"> <a href=" {{ url_for('addUser') }}">Ajouter</a></button>
+                    <table  id="myTable">
+                      <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>email</th>
+                            <th>telephone</th>
+                            <th>cin</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for manager in managers %}
+                        <tr>
+                            <td>{{ manager.nom }} {{ manager.prenom }}</td>
+                            <td>{{ manager.email }}</td>
+                            <td>{{ manager.telephone }}</td>
+                            <td>{{ manager.cin }}</td>
+                            <td>
+                                <button class="btn btn-primary edit-btn"><a href="/edit-manager/{{ manager._id }}"><i class="fa-solid fa-pen"></a></i></button>
+                                <button class="btn btn-danger" data-toggle="modal" data-target="#confirmationModal" onclick="showConfirmationModal('{{ manager._id }}')"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
+
+                <!-- ================= New Customers ================ -->
+                
+            </div>
+
+            
+          
+
+       
+        </div>
+    </div>
+
+
+    
+    <div class="modal fade custom-modal" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  Are you sure you want todelete this manager?
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <form id="deleteForm" method="POST">
+                      <button type="submit" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+   </div>
+            <script>
+                var managerIdToDelete = null;
+                function showConfirmationModal(clientId) {
+                    managerIdToDelete = clientId;
+                    $('#confirmationModal').modal('show');
+                }
+
+                function confirmDelete() {
+                    if (managerIdToDelete) {
+                        var deleteForm = $('#deleteForm');
+                        deleteForm.attr('action', '/delete-manager/' + managerIdToDelete);
+                        deleteForm.submit();
+                    }
+            }
+            </script>
+            
+<style>
+
+.custom-modal {
+display: none; 
+position: fixed;
+z-index: 1050;
+left: 30%;
+top: 5%;
+width: 40%;
+height: 100%;
+overflow: hidden;
+outline: 0;
+}
+
+.custom-modal .modal-dialog {
+position: relative;
+width: auto;
+margin: 30px auto;
+}
+
+.custom-modal .modal-content {
+background-color: #fff;
+border: 1px solid rgba(0, 0, 0, 0.2);
+border-radius: 4px;
+box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+outline: 0;
+}
+
+.custom-modal .modal-header {
+padding: 15px;
+border-bottom: 1px solid #e9ecef;
+}
+
+.custom-modal .modal-title {
+margin: 0;
+font-size: 18px;
+font-weight: bold;
+}
+
+.custom-modal .modal-body {
+position: relative;
+padding: 15px;
+}
+
+.custom-modal .modal-footer {
+padding: 15px;
+border-top: 1px solid #e9ecef;
+text-align: right;
+display: flex;
+justify-content: flex-end;
+
+}
+
+.custom-modal .btn {
+padding: 8px 16px;
+font-size: 14px;
+margin-left: 10px;
+margin-right: 10px;
+}
+
+.custom-modal .btn-secondary {
+color: #fff;
+background-color: #6c757d;
+border-color: #6c757d;
+}
+
+.custom-modal .btn-danger {
+color: #fff;
+background-color: #dc3545;
+border-color: #dc3545;
+margin-left: 10px;
+}
+
+.custom-modal .close {
+position: absolute;
+right: 15px;
+top: 15px;
+font-size: 20px;
+font-weight: 700;
+opacity: 0.8;
+cursor: pointer;
+border: none;
+}
+
+.custom-modal .close:hover {
+opacity: 1;
+}
+
+</style>
+<style>
+    .button-25 a{
+        text-decoration: none;
+    }
+    
+    .button-25 {
+      background-color: #36A9AE;
+      background-image: linear-gradient(#37ADB2, #329CA0);
+      border: 1px solid #2A8387;
+      border-radius: 4px;
+      box-shadow: rgba(0, 0, 0, 0.12) 0 1px 1px;
+      color: #FFFFFF;
+      cursor: pointer;
+      display: block;
+      font-family: -apple-system,".SFNSDisplay-Regular","Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-size: 17px;
+      line-height: 100%;
+      margin: 0;
+      outline: 0;
+      padding: 11px 15px 12px;
+      text-align: center;
+      transition: box-shadow .05s ease-in-out,opacity .05s ease-in-out;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      width: 15%;
+      margin-left: 80%;
+    }
+    
+    .button-25:hover {
+      box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px inset, rgba(0, 0, 0, 0.4) 0 1px 2px;
+      text-decoration: none;
+      transition-duration: .15s, .15s;
+    }
+    
+    .button-25:active {
+      box-shadow: rgba(0, 0, 0, 0.15) 0 2px 4px inset, rgba(0, 0, 0, 0.4) 0 1px 1px;
+    }
+    
+    .button-25:disabled {
+      cursor: not-allowed;
+      opacity: .6;
+    }
+    
+    .button-25:disabled:active {
+      pointer-events: none;
+    }
+    
+    .button-25:disabled:hover {
+      box-shadow: none;
+    }
+    </style>
+    <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+    <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Script pour DataTables -->
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            lengthMenu: [5,10,20,30,40,50,100],
+                language: {
+                    "emptyTable": "Aucun enregistrement trouvé",
+                    "info": "Affichage de START à END sur TOTAL entrées", /* set custom text for info */
+                    "paginate": {
+                              "next": "Suivant", /* set text for "Next" button */
+                              "previous": "Précédent", /* set text for "Previous" button */
+                                  
+                            },
+                    
+                    search: "" ,
+                    // lengthMenu: "Afficher MENU contact", 
+                    searchPlaceholder: "Cherchez une réservation spécifique" // add placeholder text
+            }
+        });
+    });
+</script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>
